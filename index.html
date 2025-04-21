@@ -1,0 +1,69 @@
+<html>
+<body id="body">
+
+
+<script>
+let cv =  document.createElement("canvas");
+cv.height = "500"; cv.width = "1231" ;
+cv.setAttribute("style" , 'background: black;opacity: 1;')
+let ctx = cv.getContext("2d");
+
+{
+// for single column && font size =15;
+let y =0;
+let text = 0;
+
+function main() {
+ ctx.fillStyle = "rgba(0,0,0, 0.5)";
+ ctx.fillRect(0,0, cv.width, cv.height);
+
+ ctx.fillStyle = "green";
+ ctx.font = "20px monospace";
+
+ ctx.fillText(text ? "1" : "0" ,0,y*20);
+ if(y*20 > cv.height)
+  {
+   y = 0;
+  } 
+  y+= 1;
+  text =  !text;
+}
+
+} 
+
+// -- for multiple columns && font size = 20
+let fonts = 10;
+let totalcols = Math.floor(cv.width/fonts);
+let columns = new Array(totalcols).fill(0);
+
+function main2(){
+ ctx.fillStyle = "rgba(0,0,0,0.05)";
+ ctx.fillRect(0,0,cv.width, cv.height);
+
+ for(let i =0 ;i< totalcols ;i++){
+  let text = Math.random() < 0.5 ? "0" : "1";
+  let x = i * fonts;
+  let y = columns[i] * fonts;
+  
+  ctx.fillStyle = "green";
+  ctx.font = fonts +"px monospace";
+
+  ctx.fillText(text,x,y);
+
+  if( y > cv.height && Math.random() > 0.975){
+       columns[i] = 0;
+    }
+  
+  columns[i]++;
+ }
+}
+
+
+
+
+setInterval(main2, 50 )
+
+document.getElementById("body").appendChild(cv);
+</script>
+</body>
+</html>
