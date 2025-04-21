@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <title>JS Tester</title>
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            width: 200px;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <input id="ip" type="text" placeholder="Enter friend name">
+    <button id="btn">Add Friend</button>
+
+    <div class="container">
+        <ul id="friend-list"></ul>
+    </div>
+  <!-- ✅ Add an audio element -->
+<audio id="audio" src="http://www.soundjay.com/button/beep-07.wav" autoplay="false" ></audio>
+    <a onclick="playSound();"> Play</a>
+    <script>
+        let friends = []; // ✅ Array of friend objects
+
+        let inputField = document.getElementById("ip");
+        let button = document.getElementById("btn");
+        let clickSound = document.getElementById("click-sound"); // ✅ Select the audio element
+
+        // ✅ Add event listener to the button
+        button.addEventListener("click", function () {
+            let friendName = inputField.value.trim(); // Remove spaces
+            if (friendName === "") return; // Avoid empty names
+
+            friends.push({ name: friendName, count: 0 }); // ✅ Push new friend object
+            list(); // ✅ Update the list
+            inputField.value = ""; // ✅ Clear input after adding
+        });
+
+        // ✅ Function to build the friend list
+        function list() {
+            let html = "";
+            friends.forEach((friend, i) => {
+                html += `<li onclick="updateCount(${i})">
+                            ${friend.name} <span id="count-${i}">${friend.count}</span>
+                         </li>`;
+            });
+            document.getElementById("friend-list").innerHTML = html;
+        }
+
+        // ✅ Function to update vote count
+        function updateCount(i) {
+            friends[i].count++; // ✅ Increment count
+            document.getElementById(`count-${i}`).innerText = friends[i].count; // ✅ Update UI
+  clickSound.currentTime = 0; // ✅ Reset sound if it's still playing
+            clickSound.play(); // ✅ Play sound effect on click
+       
+        }
+ function playSound() {
+          var sound = document.getElementById("audio");
+          sound.play();
+      }
+    </script>
+</body>
+</html>

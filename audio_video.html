@@ -1,0 +1,41 @@
+<html>
+<body>
+ <audio controls>
+  <source src="" type ="audio/ogg">
+  <source src="" type = "audio/mpeg">
+ </audio>
+<input type="file" accept="video/*"  id="file">
+ <video width="500" height="200" controls id="vid">
+  <source src="https://www.youtube.com/watch?v=_ff701vX1Gg" type="video/mp4">
+ </video>
+
+<iframe
+ width="600" height ="200"
+ src= "https://discoveryplus.in/"
+frameborder="0" 
+  allowfullscreen>
+</iframe>
+
+ <script>
+ let input = document.getElementById("file");
+ let video = document.getElementById("vid");
+
+ input.onchange = function (e) {
+  let file = e.target.files[0];
+  if(file){
+   let tempurl = URL.createObjectURL(file);
+/*
+URL.createObjectURL() – What is it?
+URL.createObjectURL() creates a temporary URL that points to a file object in the browser's memory (like a file the user selected from <input type="file">).
+
+You can use this URL as the src of a video, image, audio, etc. — without uploading the file to a server.
+*/
+   video.src = tempurl;
+   video.play();
+  }
+}
+
+video.src= e.target.baseURI
+ </script>
+</body>
+</html>

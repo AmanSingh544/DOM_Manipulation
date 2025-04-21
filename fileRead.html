@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <style>
+  img{
+   height: 100px;
+    width: 100px;
+    margin: 10px
+   }
+ </style>
+</head>
+ <body>
+ <input type="file"multiple onchange="uploadAndReadFile(this.files)" accept = "image/*" />
+ <div id="message"></div>
+ <script>
+ function uploadAndReadFile(images) {
+ const files = Array.from(images);
+ let op = document.getElementById("message");
+
+ files.forEach(file => {
+ let img = document.createElement("img");
+ let fr = new FileReader();
+
+ fr.onload = function (e) {
+	console.log(e.target.result)
+	 img.src = e.target.result;
+  op.appendChild(img);
+	}
+  fr.readAsDataURL(file);
+	});
+
+}
+ </script>
+ </body>
+</html>

@@ -1,0 +1,71 @@
+<html>
+<head>
+<style>
+ span{
+ margin: 5px;
+ }
+.control {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
+</style>
+</head>
+<body>
+
+<div class="control">
+ <span> Width: </span><input type="range" min="1" max="10" value="5" id ="pwidth"/> 
+ <span> Color: </span><input type="color" id ="pcolor"/> 
+ <span> </span><button id ="pclear" > Clear X </button>
+ <span> </span><button id ="save" > Save </button>
+
+</div>
+<canvas id="c1" width="600" height="600" style="border: 1px solid black"></canvas>
+<img id="image" width="200" height="200"></img>
+<script>
+ let cv = document.getElementById("c1");
+ let dwidth = document.getElementById("pwidth");
+ let dcolor = document.getElementById("pcolor");
+ let dclear = document.getElementById("pclear");
+
+ let save = document.getElementById("save");
+ let image = document.getElementById("image");
+
+
+ let ctx = cv.getContext("2d");
+ let width="5", color="black";
+ let x=0,y=0,isdragging= false;
+
+ cv.addEventListener("mousemove", draw )
+ cv.addEventListener("mousedown", (e) =>{ x= e.offsetX ;y= e.offsetY; isdragging = true } )
+ cv.addEventListener("mouseup", () => isdragging = false)
+
+ dwidth.addEventListener("change", (e) => width = e.target.value);
+ dcolor.addEventListener("change", (e) => color = e.target.value);
+ dclear.addEventListener("click", () => ctx.clearRect(0,0, cv.width, cv.height));
+
+ save.addEventListener("click", () =>{ 
+  let drawedImg = cv.toDataURL();
+  image.src = drawedImg;  
+ });
+
+
+ function draw(e) {
+if(isdragging){
+ ctx.beginPath();
+ ctx.strokeStyle = color
+ ctx.lineWidth = width;
+ ctx.moveTo(x,y);
+ ctx.lineTo(e.offsetX, e.offsetY);
+ ctx.lineCap = "round"
+ ctx.stroke();
+// ✅ Update position AFTER drawing the line
+    x = e.offsetX;
+    y = e.offsetY;
+ }
+}
+ 
+</script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .upload-container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #28a745;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .empty-message {
+      color: #777;
+      font-style: italic;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="upload-container">
+    <h2>Select Files</h2>
+<input type="file" multiple id="file-input" style="display: none;" onchange="handleFileUpload(this.files)" />
+<label for="file-input" style="background-color: #4CAF50; color: white; padding: 10px; cursor: pointer;">Choose Files</label>
+    <span id="file-count">No files uploaded yet.</span>
+    <div id="message" class="empty-message">No files uploaded yet.</div>
+  </div>
+
+  <script>
+    let uploadedFiles = []; // Store uploaded files here
+
+    function handleFileUpload(files) {
+      const messageDiv = document.getElementById("message");
+      messageDiv.innerHTML = ""; // Clear previous content
+
+      if (!files.length) {
+        messageDiv.innerHTML = '<div class="empty-message">No files selected.</div>';
+        return;
+      }
+
+      // Convert the FileList to an array and store it in uploadedFiles
+      uploadedFiles = Array.from(files);
+      
+      updateFileCount(); // Update the file count next to the input
+      renderFileTable(); // Re-render the table to reflect the updated file list
+    }
+
+    function renderFileTable() {
+      const messageDiv = document.getElementById("message");
+      messageDiv.innerHTML = ""; // Clear existing table
+
+      if (uploadedFiles.length === 0) {
+        messageDiv.innerHTML = '<div class="empty-message">No files uploaded yet.</div>';
+        return;
+      }
+
+      const table = document.createElement("table");
+
+      // Header
+      const headerRow = document.createElement("tr");
+      ["File Name", "Size (KB)", "Type", "Action"].forEach(headerText => {
+        const th = document.createElement("th");
+        th.textContent = headerText;
+        headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+
+      // Rows for each file
+      uploadedFiles.forEach(file => {
+        const row = document.createElement("tr");
+
+        const nameCell = document.createElement("td");
+        nameCell.textContent = file.name;
+
+        const sizeCell = document.createElement("td");
+        sizeCell.textContent = (file.size / 1024).toFixed(2); // Size in KB
+
+        const typeCell = document.createElement("td");
+        typeCell.textContent = file.type || "Unknown";
+
+        const actionCell = document.createElement("td");
+        const btn = document.createElement("button");
+        btn.textContent = "X";
+        btn.onclick = () => {
+          removeFile(file);
+        };
+
+        actionCell.appendChild(btn);
+        row.appendChild(nameCell);
+        row.appendChild(sizeCell);
+        row.appendChild(typeCell);
+        row.appendChild(actionCell);
+
+        table.appendChild(row);
+      });
+
+      messageDiv.appendChild(table);
+    }
+
+    function removeFile(fileToRemove) {
+      // Remove file from uploadedFiles array
+      uploadedFiles = uploadedFiles.filter(file => file !== fileToRemove);
+
+      updateFileCount(); // Update the file count after removing the file
+      renderFileTable(); // Re-render the table after removal
+    }
+
+    function updateFileCount() {
+      const fileCountDisplay = document.getElementById("file-count");
+      if (uploadedFiles.length === 0) {
+        fileCountDisplay.textContent = "No files uploaded yet.";
+      } else {
+        fileCountDisplay.textContent = `${uploadedFiles.length} file(s) uploaded.`;
+      }
+    }
+  </script>
+</body>
+</html>

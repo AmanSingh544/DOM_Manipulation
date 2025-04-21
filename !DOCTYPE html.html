@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Table</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        .box {
+            background-color: #f0f0f0; /* Light gray background */
+            font-weight: bold;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Click on a row to display details</h2>
+<button id="theme"> Theme</button>
+    <div id="table-container"></div>
+    <p id="message">Click on a row to see details here.</p>
+
+    <script>
+        // Step 1: Create an array of names
+        const names = ["Alice", "Bob", "Charlie", "David", "Emma"];
+	let dark = false;
+        // Step 2-3: Function to build the table dynamically
+        function build() {
+            let html = "<table>";
+            html += "<tr><th>Index</th><th>Name</th></tr>";
+
+            // Step 4: Loop through the names array and build table rows
+            names.forEach((name, index) => {
+                html += `<tr data-row="${index}" data-name="${name}" onclick="getData(this)">
+                            <td class="box">${index}</td>
+                            <td>${name}</td>
+                         </tr>`;
+            });
+
+            html += "</table>";
+
+            // Step 8: Add the generated table to the page
+            document.getElementById("table-container").innerHTML = html;
+        }
+
+        // Step 9-10: Function to get row data on click
+        function getData(element) {
+            let rowIndex = element.getAttribute("data-row");
+            let rowName = element.getAttribute("data-name");
+
+            // Step 11: Display the message
+            document.getElementById("message").innerText = 
+                `Selected Row Index: ${rowIndex}, Name: ${rowName}`;
+        }
+
+        // Step 3: Invoke the build function
+        build();
+
+document.getElementById("theme").addEventListener("click", function () {
+  dark = !dark;
+console.log(dark)
+  document.body.setAttribute("style", dark ? "background-color: black !important; color: white !important" : "background-color: white !important; color: black !important");
+document.querySelector("table").setAttribute("style", dark ? "background-color: #645e5e !important; color: red !important" : "background-color: white !important; color: black !important")
+})
+    </script>
+
+</body>
+</html>

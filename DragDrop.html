@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bidirectional Drag and Drop</title>
+    <style>
+        .box {
+            background-color: grey;
+            margin: 30px;
+            width: 90%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .innerbox {
+	      background-color: #ffffff;
+    margin-right: 20px;
+    height: 20px;
+    width: 20px;
+    border: 1px solid deepskyblue;
+	}
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            gap: 50px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+   <div>
+      <span id="dragitem" draggable="true">✅</span>
+	<div class="box">
+	    <div class="innerbox" id="dragover"></div>
+	    <h3> I am not a robot </h3>
+	</div>
+   </div>
+   <div>
+     <button id="btn" disabled="false" > Click Me!</button>
+   </div>
+   
+    <script> 
+        let dragitem = document.getElementById("dragitem");
+	let dragover = document.getElementById("dragover");
+        let dragcontent;
+        
+	dragitem.ondragstart = function () {
+	 console.log("Drag starts!");
+         event.dataTransfer.setData("text/plain", dragcontent)
+	}
+        dragover.addEventListener("dragover", function() { 
+	event.preventDefault(); 
+	console.log("Dragging over drop zone!!")
+	});
+
+	dragover.addEventListener("drop", function () {
+         dragcontent = event.dataTransfer.getData("text/plain");
+	 console.log(data,dragcontent);
+	 document.getElementById("btn").disabled = false
+	 dragover.appendChild(dragcontent);
+	});
+
+	document.addEventListener("click", function(event) {
+        // Ensure the click is inside a container
+      //  if (event.target.classList.contains("innerbox")) {
+            // Create a new element
+           // let newElement = document.createElement("div");
+           // newElement.classList.add("box");
+
+            // Get the position **relative to the clicked element**
+            let rect = event.target.getBoundingClientRect();
+            let x = event.clientX - rect.left;  // X position inside the container
+            let y = event.clientY - rect.top;   // Y position inside the container
+
+            dragitem.style.left = x + "px";
+            dragitem.style.top = y + "px";
+            dragitem.style.position = relative;
+
+
+            // Append inside the clicked element
+            event.target.appendChild(dragitem);
+       // }
+    });
+    </script>
+</body>
+</html>

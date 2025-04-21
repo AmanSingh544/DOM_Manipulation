@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Click Me Game</title>
+ <style>
+ .output {
+   width: 500px;
+   height: 500px;
+   border: 1px solid black;
+   margin: auto;
+   position: relative;
+   background-color: #f9f9f9;
+ }
+ .box {
+   width: 50px;
+   height: 50px;
+   position: absolute;
+   background-color: red;
+   
+   cursor: pointer;
+   border-radius: 5px;
+   transition: all 0.1s;
+ }
+ .message {
+   text-align: center;
+   padding: 10px;
+   font-size: 1.3em;
+ }
+ </style>
+</head>
+<body>
+ <div class="output">
+	<div class="box"> </div>
+ </div>
+ <div class="message"></div>
+
+ <script>
+ // 1. Select elements
+const output = document.querySelector('.output');
+const message = document.querySelector('.message');
+const box = document.querySelector('.box');
+
+
+// 3. Show initial message
+message.textContent = "Press the red box to Start";
+
+// 4. Global game object
+const game = {
+  timer: null,
+  start: null
+};
+
+// 5. Generate random number function
+function getRandom(max) {
+  return Math.floor(Math.random() * max);
+}
+
+// 6. Add click event to the box
+box.addEventListener('click', function () {
+  // If game not started, start it
+    box.style.display = 'none';
+    message.textContent = "Loading...";
+ const endTime = new Date().getTime();
+    const duration = (endTime - game.start) / 1000;
+    message.textContent = `You clicked in ${duration.toFixed(2)} seconds! Click the box to try again.`;
+    // 7. Delay before showing the box again
+    addBox();
+});
+
+// 8. Function to show the box again
+function addBox() {
+ // message.textContent = "Click it!";
+    game.start = new Date().getTime();
+  box.style.display = 'block';
+
+  // 9. Set random top and left values
+  const maxX = 500 - 50;
+  const maxY = 500 - 50;
+  box.style.left = getRandom(maxX) + "px";
+  box.style.top = getRandom(maxY) + "px";
+  box.style.background = "#" + getRandom(100) + getRandom(100) + getRandom(100);
+}
+ </script>
+</body>
+</html>
